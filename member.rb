@@ -13,7 +13,7 @@ end
 conn.basic_auth ENV['GITHUB_USER_NAME'], ENV['GITHUB_TOKEN']
 
 # Get members
-org_name = 'logstash'
+org_name = ENV['ORG_NAME']
 puts "Fetching members for #{org_name}"
 response = conn.get do |req|
   req.url "/orgs/#{org_name}/members"
