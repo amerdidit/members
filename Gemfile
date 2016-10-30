@@ -5,6 +5,7 @@ ruby '2.3.1'
 
 gem 'faraday'
 gem 'redis'
+gem 'commander'
 
 group :development do
   gem 'awesome_print'
