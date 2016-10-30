@@ -5,17 +5,24 @@ require 'json'
 require 'redis'
 require File.expand_path('../../config/environment', __FILE__)
 
+# = Fetcher
+#
+# The fetcher class is used to retrieve the members of a specific organisation
+# from the github API. It then proceeds to store the members with their repo
+# stats in a redis backend.
 class Fetcher
-  def initialize(redis = Redis.new(url: ENV['REDIS_URI']))
+  def initialize(redis = Redis.new(url: ENV['REDIS_URI']),
+                 org_name = ENV['ORG_NAME'],
+                 github_username = ENV['GITHUB_USER_NAME'],
+                 github_token = ENV['GITHUB_TOKEN'])
     @connection = configured_connection
-    @connection.basic_auth ENV['GITHUB_USER_NAME'], ENV['GITHUB_TOKEN']
+    @connection.basic_auth github_username, github_token
     @redis = redis
-    @org_name = ENV['ORG_NAME']
+    @org_name = org_name
   end
 
   def fetch
     members = get_members
-    puts "#{@org_name} has #{members.length} members."
     members = add_repo_stats members
     store_members members
   end

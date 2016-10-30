@@ -17,4 +17,8 @@ end
 
 group :test do
   gem 'rspec'
+  gem 'rspec-mocks'
+  gem 'webmock'
+  gem 'faker'
+  gem 'fakeredis', :require => 'fakeredis/rspec'
 end
