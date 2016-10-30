@@ -6,9 +6,9 @@ Lets get some info about those members huh?
 
 ### Prerequisites
 
-* This repo assumes you have rbenv installed and know how to use it.
+* rbenv 
+* bundler
 
 ```
-bundle install
-ruby members.rb
+make dev
 ```
