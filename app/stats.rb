@@ -1,3 +1,6 @@
+require 'redis'
+require File.expand_path('../../config/environment', __FILE__)
+
 class Stats
   def self.list_languages
     redis = Redis.new(url: ENV['REDIS_URI'])

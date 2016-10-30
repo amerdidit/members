@@ -3,7 +3,7 @@ require 'faraday'
 require 'pry'
 require 'json'
 require 'redis'
-require File.expand_path('../environment', __FILE__)
+require File.expand_path('../../config/environment', __FILE__)
 
 class Fetcher
   def self.fetch

@@ -4,8 +4,8 @@
 require 'rubygems'
 require 'commander'
 
-require File.expand_path('../fetcher', __FILE__)
-require File.expand_path('../stats', __FILE__)
+require File.expand_path('../app/fetcher', __FILE__)
+require File.expand_path('../app/stats', __FILE__)
 
 class Members
   include Commander::Methods
