@@ -2,6 +2,7 @@
 require 'faraday'
 require 'pry'
 require 'json'
+require File.expand_path('../environment', __FILE__)
 
 conn = Faraday.new(url: 'https://api.github.com') do |faraday|
   faraday.request  :url_encoded
@@ -9,7 +10,7 @@ conn = Faraday.new(url: 'https://api.github.com') do |faraday|
   faraday.adapter  Faraday.default_adapter
 end
 
-conn.basic_auth 'amerdidit', '971ac079a5b6bc8162204c1854015a27b97f442f'
+conn.basic_auth ENV['GITHUB_USER_NAME'], ENV['GITHUB_TOKEN']
 
 # Get members
 org_name = 'logstash'
