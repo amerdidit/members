@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'redis'
 require File.expand_path('../../config/environment', __FILE__)
 

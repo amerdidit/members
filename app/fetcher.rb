@@ -6,40 +6,31 @@ require 'redis'
 require File.expand_path('../../config/environment', __FILE__)
 
 class Fetcher
-  def self.fetch
-    conn = Faraday.new(url: 'https://api.github.com') do |faraday|
-      faraday.request  :url_encoded
-      faraday.response :logger
-      faraday.adapter  Faraday.default_adapter
+  def initialize(redis = Redis.new(url: ENV['REDIS_URI']))
+    @connection = configured_connection
+    @connection.basic_auth ENV['GITHUB_USER_NAME'], ENV['GITHUB_TOKEN']
+    @redis = redis
+    @org_name = ENV['ORG_NAME']
+  end
+
+  def fetch
+    members = get_members
+    puts "#{@org_name} has #{members.length} members."
+    members = add_repo_stats members
+    store_members members
+  end
+
+  private
+
+  def store_members(members)
+    members.each do |member|
+      @redis.set(member[:login], JSON.generate(member))
     end
-    conn.basic_auth ENV['GITHUB_USER_NAME'], ENV['GITHUB_TOKEN']
+  end
 
-    ###############
-    # Get members #
-    ###############
-    org_name = ENV['ORG_NAME']
-    puts "Fetching members for #{org_name}"
-    response = conn.get do |req|
-      req.url "/orgs/#{org_name}/members"
-    end
-
-    members = JSON.parse(response.body)
-    puts "#{org_name} has #{members.length} members."
-
-    ##############################
-    # Get repos for members      #
-    ##############################
-    puts 'Fetching repos for the members'
-    members = members.map do |member|
-      {
-        login: member['login'],
-        id: member['id'],
-        repos_url: member['repos_url']
-      }
-    end
-
-    members = members.each do |member|
-      get_repos_response = conn.get do |req|
+  def add_repo_stats(members)
+    members.each do |member|
+      get_repos_response = @connection.get do |req|
         req.url member[:repos_url]
       end
       repos = JSON.parse get_repos_response.body
@@ -54,17 +45,27 @@ class Fetcher
 
       member[:repos] = repos
     end
+  end
 
-    puts members
+  def get_members
+    response = @connection.get do |req|
+      req.url "/orgs/#{@org_name}/members"
+    end
 
-    ##############################
-    # Store members with repos   #
-    ##############################
+    JSON.parse(response.body).map do |member|
+      {
+        login: member['login'],
+        id: member['id'],
+        repos_url: member['repos_url']
+      }
+    end
+  end
 
-    redis = Redis.new(url: ENV['REDIS_URI'])
-
-    members.each do |member|
-      redis.set(member[:login], JSON.generate(member))
+  def configured_connection
+    Faraday.new(url: 'https://api.github.com') do |faraday|
+      faraday.request :url_encoded
+      faraday.response :logger
+      faraday.adapter Faraday.default_adapter
     end
   end
 end

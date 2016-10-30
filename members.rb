@@ -20,7 +20,7 @@ class Members
       c.syntax = 'members fetch'
       c.summary = 'Populates the database with the members of your organisation.'
       c.action do |_args, _options|
-        Fetcher.fetch
+        Fetcher.new.fetch
       end
     end
 
