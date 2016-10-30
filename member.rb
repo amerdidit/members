@@ -60,8 +60,4 @@ members_with_repos_and_langs = members_with_repos.each do |member|
   end
 end
 
-binding.pry
-
 puts members_with_repos_and_langs
-
-
