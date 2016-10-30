@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 ruby '2.3.1'
 
 gem 'faraday'
+gem 'redis'
 
 group :development do
   gem 'awesome_print'

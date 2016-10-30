@@ -10,5 +10,6 @@ Lets get some info about those members huh?
 * bundler
 
 ```
+docker-compose up
 make dev
 ```
