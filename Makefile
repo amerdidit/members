@@ -1,7 +1,7 @@
 deps: Gemfile.lock ;
 
 dev: deps
-	bundle exec ruby member.rb
+	bundle install
 
 Gemfile.lock: Gemfile
 	bundle
