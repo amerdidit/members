@@ -31,7 +31,7 @@ members = members.map do |member|
   }
 end
 
-members_with_repos = members.each do |member|
+members = members.each do |member|
   get_repos_response = conn.get do |req|
     req.url member[:repos_url]
   end
@@ -41,23 +41,11 @@ members_with_repos = members.each do |member|
     {
       name: repo['name'],
       url: repo['url'],
-      languages_url: repo['languages_url']
+      language: repo['language']
     }
   end
 
   member[:repos] = repos
 end
 
-# collect languages of the repos
-puts 'Collecting the languages of the repos'
-
-members_with_repos_and_langs = members_with_repos.each do |member|
-  member[:repos] = member[:repos].each do |repo|
-    languages_response = conn.get repo[:languages_url]
-    languages = JSON.parse languages_response.body
-
-    repo[:languages] = languages.keys
-  end
-end
-
-puts members_with_repos_and_langs
+puts members
