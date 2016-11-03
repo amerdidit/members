@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rubygems'
 require 'webmock/rspec'
 require 'faker'
@@ -11,6 +12,7 @@ RSpec.configure do |config|
   config.raise_errors_for_deprecations!
 end
 
+# rubocop:disable LineLength
 MEMBERS_JSON = '[
     {
         "login": "electrical",
@@ -233,3 +235,4 @@ PYR_REPOS = '[
     "default_branch": "master"
   }
 ]'
+# rubocop:enable LineLength
