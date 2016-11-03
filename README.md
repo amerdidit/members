@@ -35,3 +35,12 @@ GITHUB_USER_NAME='<username>' \
 
 REDIS_URI='<uri>' ./members list_languages
 ```
+
+## Development
+
+In order to continuously run the tests and rubocop we use guard. You can
+start it by running the following command:
+
+```
+make dev
+```

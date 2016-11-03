@@ -9,6 +9,9 @@ gem 'commander'
 
 group :development do
   gem 'awesome_print'
+  gem 'guard'
+  gem 'guard-rake'
+  gem 'guard-bundler'
   gem 'inch'
   gem 'pry'
   gem 'rake'
@@ -20,5 +23,5 @@ group :test do
   gem 'rspec-mocks'
   gem 'webmock'
   gem 'faker'
-  gem 'fakeredis', :require => 'fakeredis/rspec'
+  gem 'fakeredis', require: 'fakeredis/rspec'
 end

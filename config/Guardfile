@@ -1,0 +1,14 @@
+# frozen_string_literal: true
+guard 'bundler' do
+  watch('Gemfile')
+end
+
+guard 'rake', task: :default do
+  watch('Rakefile')
+  watch('members.rb')
+  watch(%r{^(config|app|spec)/.*})
+end
+
+# Disable Desktop UI Notifications
+notification :terminal_notifier
+notification :terminal_title

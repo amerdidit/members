@@ -1,7 +1,7 @@
 deps: Gemfile.lock ;
 
 dev: deps
-	bundle install
+	bundle exec guard
 
 Gemfile.lock: Gemfile
 	bundle
