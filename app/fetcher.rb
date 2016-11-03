@@ -22,7 +22,7 @@ class Fetcher
   end
 
   def fetch
-    members = get_members
+    members = fetch_members
     members = add_repo_stats members
     store_members members
   end
@@ -37,24 +37,22 @@ class Fetcher
 
   def add_repo_stats(members)
     members.each do |member|
-      get_repos_response = @connection.get do |req|
-        req.url member[:repos_url]
-      end
-      repos = JSON.parse get_repos_response.body
-
-      repos = repos.map do |repo|
-        {
-          name: repo['name'],
-          url: repo['url'],
-          language: repo['language']
-        }
-      end
-
+      repos = fetch_repos member
       member[:repos] = repos
     end
   end
 
-  def get_members
+  def fetch_repos(member)
+    get_repos_response = @connection.get { |req| req.url member[:repos_url] }
+    repos = JSON.parse get_repos_response.body
+    repos.map do |repo|
+      { name: repo['name'],
+        url: repo['url'],
+        language: repo['language'] }
+    end
+  end
+
+  def fetch_members
     response = @connection.get do |req|
       req.url "/orgs/#{@org_name}/members"
     end
