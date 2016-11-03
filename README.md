@@ -30,10 +30,10 @@ docker-compose up
 GITHUB_USER_NAME='<username>' \
     GITHUB_TOKEN='<token>' \
     ORG_NAME='<org>' \
-    REDIS_URI='<uri>'
-    ./members fetch
+    REDIS_URI='<uri>' \
+    ./members.rb fetch
 
-REDIS_URI='<uri>' ./members list_languages
+REDIS_URI='<uri>' ./members.rb list_languages
 ```
 
 ## Development
