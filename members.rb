@@ -5,7 +5,7 @@ require 'rubygems'
 require 'commander'
 
 require File.expand_path('../app/fetcher', __FILE__)
-require File.expand_path('../app/stats', __FILE__)
+require File.expand_path('../app/member_languages', __FILE__)
 
 # = Members
 #
@@ -34,7 +34,7 @@ class Members
       c.description =
         'Lists the numbers of repos per language for a given member'
       c.action do |_args, _options|
-        Stats.list_languages
+        MemberLanguages.new.list
       end
     end
   end

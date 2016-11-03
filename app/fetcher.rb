@@ -29,29 +29,6 @@ class Fetcher
 
   private
 
-  def store_members(members)
-    members.each do |member|
-      @redis.set(member[:login], JSON.generate(member))
-    end
-  end
-
-  def add_repo_stats(members)
-    members.each do |member|
-      repos = fetch_repos member
-      member[:repos] = repos
-    end
-  end
-
-  def fetch_repos(member)
-    get_repos_response = @connection.get { |req| req.url member[:repos_url] }
-    repos = JSON.parse get_repos_response.body
-    repos.map do |repo|
-      { name: repo['name'],
-        url: repo['url'],
-        language: repo['language'] }
-    end
-  end
-
   def fetch_members
     response = @connection.get do |req|
       req.url "/orgs/#{@org_name}/members"
@@ -63,6 +40,29 @@ class Fetcher
         id: member['id'],
         repos_url: member['repos_url']
       }
+    end
+  end
+
+  def add_repo_stats(members)
+    members.each do |member|
+      repos = fetch_repos member
+      member[:repos] = repos
+    end
+  end
+
+  def store_members(members)
+    members.each do |member|
+      @redis.set(member[:login], JSON.generate(member))
+    end
+  end
+
+  def fetch_repos(member)
+    get_repos_response = @connection.get { |req| req.url member[:repos_url] }
+    repos = JSON.parse get_repos_response.body
+    repos.map do |repo|
+      { name: repo['name'],
+        url: repo['url'],
+        language: repo['language'] }
     end
   end
 
