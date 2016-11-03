@@ -17,9 +17,9 @@ RSpec.describe Fetcher do
     it 'stores members to redis' do
       stub_request(:get, "https://api.github.com/orgs/#{@org_name}/members")
         .to_return(body: MEMBERS_JSON)
-      stub_request(:get, "https://api.github.com/users/electrical/repos")
+      stub_request(:get, 'https://api.github.com/users/electrical/repos')
         .to_return(body: ELECTRICAL_REPOS)
-      stub_request(:get, "https://api.github.com/users/pyr/repos")
+      stub_request(:get, 'https://api.github.com/users/pyr/repos')
         .to_return(body: PYR_REPOS)
 
       expect(@storage_backend).to receive(:set)
